@@ -3,6 +3,7 @@ csvfilename = "waiting.csv"
 outputfilename = "output.csv"
 logfilename = "log.txt"
 Columns = "2,3-4,5"
+minlength = 2
 
 [LLM]
 api = "https://api.openai.com/v1/chat/completions"

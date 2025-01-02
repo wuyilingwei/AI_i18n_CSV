@@ -31,7 +31,8 @@ common_config = config.get('common', {})
 csvfilename = common_config.get('csvfilename', 'default.csv')
 outputfilename = common_config.get('outputfilename', 'output.csv')
 logfilename = common_config.get('logfilename', 'log.txt')
-Columns = common_config.get('Columns', '1')
+columns = common_config.get('columns', '1')
+minlength = common_config.get('minlength', 2)
 
 # Load [LLM]
 llm_config = config.get('LLM', {})
@@ -86,10 +87,17 @@ def parse_row(rows):
         result[i] = i - 1
     return result
 
-wishColumns = parse_row(Columns)
+wishColumns = parse_row(columns)
 
 # request the API
 def requestLLM(text="") -> str:
+    if text == "":
+        logger.warning("Empty text")
+        return ""
+    elif len(text) < minlength:
+        logger.warning("Text too short")
+        return text
+
     if isParallelProcessing:
         sendPrompt = f"{prompt}{promptParallelProcessing}"
     else:
